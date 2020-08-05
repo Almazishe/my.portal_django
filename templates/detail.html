@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail{% endblock %}
+
+
+{% block content %}
+
+<table class="table table-dark table-striped">
+  <tr>
+   <th scope="col">ID</th>
+    <td scope="row">{{object.id}}</td> 
+  </tr>
+  <tr>
+   <th scope="col">Name</th>
+   <td scope="row">{{object.name}}</td>
+  </tr>
+  <tr>
+   <th scope="col">Sap</th>
+   <td scope="row">{{object.sap}}</td>
+  </tr>
+  <tr>
+   <th scope="col">Sap_old</th>
+   <td scope="row">{{object.sap_old}}</td>
+  </tr>
+  <tr>
+   <th scope="col">Cat_id</th>
+   <td scope="row">{{object.cat_id}}</td>
+  </tr>
+  <tr>
+   <th scope="col">Subcat_id</th>
+   <td scope="row">{{object.subcat_id}}</td>
+  </tr>
+  <tr>
+   <th scope="col">State_id</th>
+   <td scope="row">{{object.state_id}}</td>
+  </tr>
+  <tr>
+   <th scope="col">Owner_id</th>
+   <td scope="row">{{object.owner_id}}</td>
+  </tr>
+  <tr>
+   <th scope="col">Owner_name</th>
+    <td scope="row">{{object.owner_name}}</td>
+  </tr>
+
+</table>
+
+{% endblock %}
