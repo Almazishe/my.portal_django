@@ -16,10 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from .views import home, detail_view
+from .views import home, StorageUpdateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('detail/<int:pk>/', detail_view, name='detail'),
+    path('detail/<int:pk>/', StorageUpdateView.as_view(), name='detail'),
 ]
