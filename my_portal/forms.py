@@ -11,6 +11,11 @@ def get_cat_id():
   ids = [i[0] for i in StorageCat.objects.all().values_list('id')]
   names = [i[0] for i in StorageCat.objects.all().values_list('name')]
 
+  {
+    "id": "id",
+    "name": "Mustang"
+  }
+
   res = [(-1, 'Select')]
   for i in range(len(ids)):
     res.append(tuple([ids[i], names[i]]))
@@ -26,8 +31,6 @@ def get_subcat_id():
     res.append(tuple([ids[i], names[i]]))
   res = tuple(res)
   return res
-
-
 
 def get_state_id():
   ids = [i[0] for i in StorageState.objects.all().values_list('id')]
