@@ -54,7 +54,7 @@ def storage_view(request, pk=None):
     obj.cat_id = cat_id
     obj.state_id = state_id
     if not check_field(owner_id):
-      obj.owner_id = 0
+      pass
     else:
       obj.owner_id = owner_id
     obj.owner_name = owner_name
@@ -64,17 +64,17 @@ def storage_view(request, pk=None):
     obj.manufacturer = manufacturer
     obj.description = description
     if not check_field(address_id):
-      obj.address_id = 0
+      pass
     else:
       obj.address_id = address_id
 
     if check_field(floor):
       obj.floor = floor
     else:
-      obj.floor = 0
+      pass
     obj.save()
 
-    
+
   storages = Storage.objects.all()
   cats = StorageCat.objects.all()
   subcats = StorageSubcat.objects.all()
