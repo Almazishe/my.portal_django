@@ -1,177 +1,111 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Detail{% endblock %}
 {% block scripts %}
-<!-- <script>
-  $(document).ready(function(){
-    $("#edit").on("click", function() {
-      $("#edit input").attr('checked', function(_, attr){ return !attr});
-      $("#form button").toggle('slideDown');
-      $("#form input").filter(function() {
-        $(this).attr('disabled', function(_, attr){ return !attr});
-      });
-      $("#form select").filter(function() {
-        $(this).attr('disabled', function(_, attr){ return !attr});
-      });
-    });
-  });
-</script> -->
+<script src="{% static 'detail.js' %}"></script>
   
 {% endblock %}
 
 
 {% block buttons %}
 <a href="{% url 'home' %}"><button class="btn btn-secondary">Back</button></a> <br>
-<!-- Editable<input type="checkbox" id='edit' value="Edit" checked>
-<button class="text-light btn btn-secondary" id='edit'>
-  Editable
-  <input class="form-check-input" type="checkbox" value="Editable" aria-label="Checkbox for following text input" checked>
-</button> -->
-
 {% endblock %}
 
 {% block content %}
-<form method="POST" class="text-light" id='form' onchange="this.submit();">
+<form class="text-light" id='form' url="{% url 'api:storage-detail' pk %}">
   {% csrf_token %}
   <table class="table table-striped table-dark">
     <tr>
       <th><span>ID</span></th>
-      <td><input type="text" readonly class="form-control-plaintext text-light"  value="{{obj.pk}}"></td>
+      <td><input id="id" type="text" readonly class="form-control-plaintext text-light"  value=""></td>
     </tr>
     <tr>
       <th><span>Name</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="name"  value="{% if not obj.name %}{% else %}{{obj.name}}{% endif %}"></td>
+      <td><input id="name" type="text" class="form-control-plaintext text-light" name="name"  value=""></td>
     </tr>
     <tr>
       <th><span>Sap</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="sap"  value="{% if not obj.sap %}{% else %}{{obj.sap}}{% endif %}"></td>
+      <td><input id="sap" type="text" class="form-control-plaintext text-light" name="sap"  value=""></td>
     </tr>
     <tr>
       <th><span>Sap_old</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="sap_old"  value="{% if not obj.sap_old %}{% else %}{{obj.sap_old}}{% endif %}"></td>
+      <td><input id="sap_old" type="text" class="form-control-plaintext text-light" name="sap_old"  value=""></td>
     </tr>
     <tr>
       <th><span>Cat_id</span></th>
       <td>
-        <select class="form-control-plaintext text-light" aria-label="Default select example" name='cat_id'>
-          {% if not obj.cat_id %}
-            <option selected class="bg-dark" value=0>Select....</option>
-          {% else %}
-            <option  class="bg-dark" value=0>Select....</option>
-          {% endif %}
-          {% for el in cats %}
-            {% if el.id == obj.cat_id %}
-            <option selected class="bg-dark" value="{{el.id}}">{{el.name}}</option>
-            {% else %}
-              <option class="bg-dark" value="{{el.id}}">{{el.name}}</option>
-            {% endif %}
-          {% endfor %}
+        <select id="cat_id" class="form-control-plaintext text-light" aria-label="Default select example" name='cat_id' url='{% url "api:cat-list" %}' value=''>
+          
         </select>
       </td>
     </tr>
     <tr>
       <th><span>Subcat_id</span></th>
       <td>
-        <select class="form-control-plaintext text-light" aria-label="Default select example" name='subcat_id'>
-          {% if not obj.subcat_id %}
-            <option selected class="bg-dark" value=0>Select....</option>
-          {% else %}
-            <option  class="bg-dark" value=0>Select....</option>
-          {% endif %}
-          {% for el in subcats %}
-            {% if el.id == obj.subcat_id %}
-              <option selected class="bg-dark" value="{{el.id}}">{{el.name}}</option>
-            {% elif el.cat_id == obj.cat_id %}
-              <option class="bg-dark" value="{{el.id}}">{{el.name}}</option>
-            {% endif %}
-          {% endfor %}
+        <select id="subcat_id" class="form-control-plaintext text-light" aria-label="Default select example" name='subcat_id' url='{% url "api:subcat-list" %}' value=''>
+          
         </select>
       </td>
     </tr>
     <tr>
       <th><span>State_id</span></th>
       <td>
-        <select class="form-control-plaintext text-light" aria-label="Default select example" name='state_id'>
-          {% if not obj.state_id %}
-            <option selected class="bg-dark" value=0>Select....</option>
-          {% else %}
-            <option  class="bg-dark" value=0>Select....</option>
-          {% endif %}
-          {% for el in states %}
-            {% if el.id == obj.state_id %}
-            <option selected class="bg-dark" value="{{el.id}}">{{el.name}}</option>
-            {% else %}
-              <option class="bg-dark" value="{{el.id}}">{{el.name}}</option>
-            {% endif %}
-          {% endfor %}
+        <select id="state_id" class="form-control-plaintext text-light" aria-label="Default select example" name='state_id' url='{% url "api:state-list" %}'>
+          
         </select>
       </td>
     </tr>
     <tr>
       <th><span>owner_id</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="owner_id"  value="{% if not obj.owner_id %}{% else %}{{obj.owner_id}}{% endif %}"></td>
+      <td><input id="owner_id" type="text" class="form-control-plaintext text-light" name="owner_id"  value=""></td>
     </tr>
     <tr>
       <th><span>Owner_name</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="owner_name"  value="{% if not obj.owner_name %}{% else %}{{obj.owner_name}}{% endif %}"></td>
+      <td><input id="owner_name" type="text" class="form-control-plaintext text-light" name="owner_name"  value=""></td>
     </tr>
     <tr>
       <th><span>Resp_id</span></th>
       <td>
-        <select class="form-control-plaintext text-light" aria-label="Default select example" name='resp_id'>
-          {% if not obj.resp_id %}
-            <option selected class="bg-dark" value=0>Select....</option>
-          {% else %}
-            <option  class="bg-dark" value=0>Select....</option>
-          {% endif %}
-          {% for el in resps %}
-            {% if el.id == obj.resp_id %}
-              <option selected class="bg-dark" value="{{el.id}}">{{el.firstname}} {{el.secondname}}</option>
-            {% else %}
-              <option class="bg-dark" value="{{el.id}}">{{el.firstname}} {{el.secondname}}</option>
-            {% endif %}
-          {% endfor %}
+        <select id="resp_id" class="form-control-plaintext text-light" aria-label="Default select example" name='resp_id' url='{% url "api:resp-list" %}'>
+          
         </select>
       </td>
     </tr>
     <tr>
       <th><span>date_open</span></th>
-      <td><input type="text" readonly class="form-control-plaintext text-light" name="date_open" value="{% if not obj.date_open %}{% else %}{{obj.date_open}}{% endif %}" ></td>
+      <td><input id="date_open" type="text" readonly class="form-control-plaintext text-light" name="date_open" value="" ></td>
     </tr>
     <tr>
       <th><span>date_assign</span></th>
-      <td><input type="text" readonly class="form-control-plaintext text-light" name="date_assign" value="{% if not obj.date_assign %}{% else %}{{obj.date_assign}}{% endif %}" ></td>
+      <td><input id="date_assign" type="text" readonly class="form-control-plaintext text-light" name="date_assign" value="" ></td>
     </tr>
     <tr>
       <th><span>Model</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="model"  value="{% if not obj.model %}{% else %}{{obj.model}}{% endif %}" ></td>
+      <td><input id="model" type="text" class="form-control-plaintext text-light" name="model"  value="" ></td>
     </tr>
     <tr>
       <th><span>serial_number</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="serial_number"  value="{% if not obj.serial_number %}{% else %}{{obj.serial_number}}{% endif %}" ></td>
+      <td><input id="serial_number" type="text" class="form-control-plaintext text-light" name="serial_number"  value="" ></td>
     </tr>
     <tr>
       <th><span>manufacturer</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="manufacturer"  value="{% if not obj.manufacturer %}{% else %}{{obj.manufacturer}}{% endif %}" ></td>
+      <td><input id="manufacturer" type="text" class="form-control-plaintext text-light" name="manufacturer"  value="" ></td>
     </tr>
     <tr>
       <th><span>modified_date</span></th>
-      <td><input type="text" readonly class="form-control-plaintext text-light" name="modified_date" value="{% if not obj.modified_date %}{% else %}{{obj.modified_date}}{% endif %}" ></td>
+      <td><input id="modified_date" type="text" readonly class="form-control-plaintext text-light" name="modified_date" value="" ></td>
     </tr>
     <tr>
       <th><span>address_id</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="address_id"  value="{% if not obj.address_id %}{% else %}{{obj.address_id}}{% endif %}"></td>
+      <td><input id="address_id" type="text" class="form-control-plaintext text-light" name="address_id"  value=""></td>
     </tr>
     <tr>
       <th><span>floor</span></th>
-      <td><input type="text" class="form-control-plaintext text-light" name="floor"  value="{% if not obj.floor %}{% else %}{{obj.floor}}{% endif %}"></td>
+      <td><input id="floor" type="text" class="form-control-plaintext text-light" name="floor"  value=""></td>
     </tr>
-
-
-
     <tr>
       <th><span>description</span></th>
-      <td><textarea class="form-control-plaintext text-light" rows="4"  name="description">{% if not obj.description %}{% else %}{{obj.description}}{% endif %}</textarea></td>
+      <td><textarea id="description" class="form-control-plaintext text-light" rows="4"  name="description"></textarea></td>
     </tr>
   </table>
 </form>
