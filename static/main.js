@@ -1,25 +1,21 @@
 doneTyping();
 var send_data = {}
-//setup before functions
 var typingTimer;                //timer identifier
 var doneTypingInterval = 500;  //time in ms, 5 second for example
 var $input = $('#input');
 
-//on keyup, start the countdown
 $input.on('keyup', function () {
   clearTimeout(typingTimer);
   send_data['search'] = this.value
   typingTimer = setTimeout(doneTyping, doneTypingInterval);
 });
 
-//on keydown, clear the countdown 
 $input.on('keydown', function () {
   clearTimeout(typingTimer);
 });
 
 
 
-//user is "finished typing," do something
 function doneTyping() {
   var url = $('#table').attr('url')
   $.ajax({

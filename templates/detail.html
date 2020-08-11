@@ -12,38 +12,60 @@
 {% endblock %}
 
 {% block content %}
-<form class="text-light" id='form' url="{% url 'api:storage-detail' pk %}">
+<form class="text-light" id='form' url="{% url 'api:storage-detail' obj.pk %}">
   {% csrf_token %}
   <table class="table table-striped table-dark">
     <tr>
       <th><span>ID</span></th>
-      <td><input id="id" type="text" readonly class="form-control-plaintext text-light"  value=""></td>
+      <td><input id="id" type="text" readonly class="form-control-plaintext text-light"  value="{{obj.id}}"></td>
     </tr>
     <tr>
       <th><span>Name</span></th>
-      <td><input id="name" type="text" class="form-control-plaintext text-light" name="name"  value=""></td>
+      <td><input id="name" type="text" class="form-control-plaintext text-light" name="name"  value="{{obj.name}}"></td>
     </tr>
     <tr>
       <th><span>Sap</span></th>
-      <td><input id="sap" type="text" class="form-control-plaintext text-light" name="sap"  value=""></td>
+      <td><input id="sap" type="text" class="form-control-plaintext text-light" name="sap"  value="{{obj.sap}}"></td>
     </tr>
     <tr>
       <th><span>Sap_old</span></th>
-      <td><input id="sap_old" type="text" class="form-control-plaintext text-light" name="sap_old"  value=""></td>
+      <td><input id="sap_old" type="text" class="form-control-plaintext text-light" name="sap_old"  value="{{obj.sap_old}}"></td>
     </tr>
     <tr>
       <th><span>Cat_id</span></th>
       <td>
-        <select id="cat_id" class="form-control-plaintext text-light" aria-label="Default select example" name='cat_id' url='{% url "api:cat-list" %}' value=''>
-          
+        <select id="cat_id" class="form-control-plaintext text-light" aria-label="Default select example" name='cat_id' url='{% url "api:cat-list" %}' value='{{ obj.cat_id }}'>
+          {% if not obj.cat_id %}
+            <option selected class="bg-dark" value=0>Select....</option>
+          {% else %}
+            <option  class="bg-dark" value=0>Select....</option>
+          {% endif %}
+          {% for el in cats %}
+            {% if el.id == obj.cat_id %}
+            <option selected class="bg-dark" value="{{el.id}}">{{el.name}}</option>
+            {% else %}
+              <option class="bg-dark" value="{{el.id}}">{{el.name}}</option>
+            {% endif %}
+          {% endfor %}
         </select>
       </td>
     </tr>
     <tr>
       <th><span>Subcat_id</span></th>
       <td>
-        <select id="subcat_id" class="form-control-plaintext text-light" aria-label="Default select example" name='subcat_id' url='{% url "api:subcat-list" %}' value=''>
-          
+        <select id="subcat_id" class="form-control-plaintext text-light" aria-label="Default select example" name='subcat_id' url='{% url "api:subcat-list" %}' value='{{ obj.subcat_id }}'>
+          {% if not obj.subcat_id %}
+            <option selected class="bg-dark" value=0>Select....</option>
+          {% else %}
+            <option  class="bg-dark" value=0>Select....</option>
+          {% endif %}
+          {% for el in subcats %}
+            {% if el.id == obj.subcat_id %}
+              <option selected class="bg-dark" value="{{el.id}}">{{el.name}}</option>
+            {% elif el.cat_id == obj.cat_id %}
+              <option class="bg-dark" value="{{el.id}}">{{el.name}}</option>
+            {% endif %}
+          {% endfor %}
         </select>
       </td>
     </tr>
@@ -51,61 +73,83 @@
       <th><span>State_id</span></th>
       <td>
         <select id="state_id" class="form-control-plaintext text-light" aria-label="Default select example" name='state_id' url='{% url "api:state-list" %}'>
-          
+          {% if not obj.state_id %}
+            <option selected class="bg-dark" value=0>Select....</option>
+          {% else %}
+            <option  class="bg-dark" value=0>Select....</option>
+          {% endif %}
+          {% for el in states %}
+            {% if el.id == obj.state_id %}
+            <option selected class="bg-dark" value="{{el.id}}">{{el.name}}</option>
+            {% else %}
+              <option class="bg-dark" value="{{el.id}}">{{el.name}}</option>
+            {% endif %}
+          {% endfor %}
         </select>
       </td>
     </tr>
     <tr>
       <th><span>owner_id</span></th>
-      <td><input id="owner_id" type="text" class="form-control-plaintext text-light" name="owner_id"  value=""></td>
+      <td><input id="owner_id" type="text" class="form-control-plaintext text-light" name="owner_id"  value="{{obj.owner_id}}"></td>
     </tr>
     <tr>
       <th><span>Owner_name</span></th>
-      <td><input id="owner_name" type="text" class="form-control-plaintext text-light" name="owner_name"  value=""></td>
+      <td><input id="owner_name" type="text" class="form-control-plaintext text-light" name="owner_name"  value="{{obj.owner_name}}"></td>
     </tr>
     <tr>
       <th><span>Resp_id</span></th>
       <td>
         <select id="resp_id" class="form-control-plaintext text-light" aria-label="Default select example" name='resp_id' url='{% url "api:resp-list" %}'>
-          
+          {% if not obj.resp_id %}
+            <option selected class="bg-dark" value=0>Select....</option>
+          {% else %}
+            <option  class="bg-dark" value=0>Select....</option>
+          {% endif %}
+          {% for el in resps %}
+            {% if el.id == obj.resp_id %}
+              <option selected class="bg-dark" value="{{el.id}}">{{el.firstname}} {{el.secondname}}</option>
+            {% else %}
+              <option class="bg-dark" value="{{el.id}}">{{el.firstname}} {{el.secondname}}</option>
+            {% endif %}
+          {% endfor %}
         </select>
       </td>
     </tr>
     <tr>
       <th><span>date_open</span></th>
-      <td><input id="date_open" type="text" readonly class="form-control-plaintext text-light" name="date_open" value="" ></td>
+      <td><input id="date_open" type="text" readonly class="form-control-plaintext text-light" name="date_open" value="{{obj.date_open}}" ></td>
     </tr>
     <tr>
       <th><span>date_assign</span></th>
-      <td><input id="date_assign" type="text" readonly class="form-control-plaintext text-light" name="date_assign" value="" ></td>
+      <td><input id="date_assign" type="text" readonly class="form-control-plaintext text-light" name="date_assign" value="{{obj.date_assign}}" ></td>
     </tr>
     <tr>
       <th><span>Model</span></th>
-      <td><input id="model" type="text" class="form-control-plaintext text-light" name="model"  value="" ></td>
+      <td><input id="model" type="text" class="form-control-plaintext text-light" name="model"  value="{{obj.model}}" ></td>
     </tr>
     <tr>
       <th><span>serial_number</span></th>
-      <td><input id="serial_number" type="text" class="form-control-plaintext text-light" name="serial_number"  value="" ></td>
+      <td><input id="serial_number" type="text" class="form-control-plaintext text-light" name="serial_number"  value="{{obj.serial_number}}" ></td>
     </tr>
     <tr>
       <th><span>manufacturer</span></th>
-      <td><input id="manufacturer" type="text" class="form-control-plaintext text-light" name="manufacturer"  value="" ></td>
+      <td><input id="manufacturer" type="text" class="form-control-plaintext text-light" name="manufacturer"  value="{{obj.manufacturer}}" ></td>
     </tr>
     <tr>
       <th><span>modified_date</span></th>
-      <td><input id="modified_date" type="text" readonly class="form-control-plaintext text-light" name="modified_date" value="" ></td>
+      <td><input id="modified_date" type="text" readonly class="form-control-plaintext text-light" name="modified_date" value="{{obj.modified_date}}" ></td>
     </tr>
     <tr>
       <th><span>address_id</span></th>
-      <td><input id="address_id" type="text" class="form-control-plaintext text-light" name="address_id"  value=""></td>
+      <td><input id="address_id" type="text" class="form-control-plaintext text-light" name="address_id"  value="{{obj.address_id}}"></td>
     </tr>
     <tr>
       <th><span>floor</span></th>
-      <td><input id="floor" type="text" class="form-control-plaintext text-light" name="floor"  value=""></td>
+      <td><input id="floor" type="text" class="form-control-plaintext text-light" name="floor"  value="{{obj.floor}}"></td>
     </tr>
     <tr>
       <th><span>description</span></th>
-      <td><textarea id="description" class="form-control-plaintext text-light" rows="4"  name="description"></textarea></td>
+      <td><textarea id="description" class="form-control-plaintext text-light" rows="4"  name="description">{{obj.description}}</textarea></td>
     </tr>
   </table>
 </form>
