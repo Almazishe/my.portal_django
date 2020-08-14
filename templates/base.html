@@ -5,9 +5,8 @@
 <head>
 	<title>{% block title %}{% endblock %}</title>
 	
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'base.css' %}">
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
   {% block styles %}{% endblock %}
 </head>
 <body>
@@ -31,17 +30,21 @@
         </div>
       </nav>
   
-    <main role="main" class="bg-custom col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="fix sticky-top bg-dark1 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-4 pl-5 pr-5 pt-3 mb-5 rounded-bottom shadow">
-          <div class="form__group field">
-            <input id="input"  class="form__field" placeholder="Type id..." id='name'/>
+    <main id="main" role="main" class="bg-custom col-md-9 col-lg-10">
+        <div id='nav' class="fix sticky-top bg-dark1 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center shadow">
+          <!-- <button class="sidebar-toggler sidebar-toggler-right" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sidebar-toggler-icon"></span>
+          </button> -->
+          <div>
+            <input id="input"  class="form-control rounded-pill" placeholder="Type id..." id='name'/>
             <ul id="detail_search_res" class="position-absolute bg-dark1 shadow border-top border-bottom"></ul>
           </div>
           
+          
 
-          <div class="text-light">
+          <!-- <div class="text-light">
             Almaz
-          </div>
+          </div> -->
           <div id="popup" class="hide_popup text-light position-absolute">
             <h3>Success!</h3>
             <p class="p">Your something changed successfully! </p>

@@ -1,18 +1,22 @@
 from django.urls import path
+from rest_framework import routers
 
-from .views import  (StorageList, 
-                    StorageDetailAPI,
-                    StateListAPI,
-                    CatListAPI,
-                    SubCatListAPI,
-                    RespListAPI
+from .views import  (
+                    StorageViewSet,
+                    CategoryViewSet,
+                    SubCategoryViewSet,
+                    StateViewSet,
+                    RespViewSet,
+                    UserViewSet
                     )
 
-urlpatterns = [
-    path('storage/list/', StorageList.as_view(), name='storage_list'),
-    path('storage/detail/<int:pk>/', StorageDetailAPI.as_view(), name='storage-detail'),
-    path('state/list/', StateListAPI.as_view(), name='state-list'),
-    path('cat/list/', CatListAPI.as_view(), name='cat-list'),
-    path('subcat/list/', SubCatListAPI.as_view(), name='subcat-list'),
-    path('resp/list/', RespListAPI.as_view(), name='resp-list'),
-]
+router = routers.DefaultRouter()
+router.register('storages',StorageViewSet)
+router.register('categories',CategoryViewSet)
+router.register('subcategories',SubCategoryViewSet)
+router.register('states',StateViewSet)
+router.register('resps',RespViewSet)
+router.register('users', UserViewSet)
+
+
+urlpatterns = router.urls 

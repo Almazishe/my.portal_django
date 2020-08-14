@@ -12,6 +12,8 @@ $(document).on("submit",".input", e => {
   var url = $("#table").attr('url')
   putRequest(url, type, value)  
 
+  console.log(url)
+
   show_popup()
   popup = document.getElementById("popup")
   popup.querySelector('.p').innerHTML = x.querySelector('.text').getAttribute('name') + " изменен удачно!"
@@ -25,6 +27,10 @@ $(document).on("change", ".select", e => {
   if(type == 'cat_id'){
     putRequest(url, 'subcat_id', 0)
     set_subcats(value)
+  } else if (type == 'owner_id'){
+    var selected = x.options[x.selectedIndex].innerHTML
+    putRequest(url, 'owner_name', selected)
+
   }
   putRequest(url, type, value)
 
@@ -64,9 +70,13 @@ function set_subcats(cat_id){
 }
 
 function putRequest(url, type, value){ 
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
   $.ajax({
     type: "PUT",
     url: url,
+    headers: {
+      'X-CSRFToken': csrftoken
+    },
     data: {
       type: type,
       value: value
@@ -109,7 +119,7 @@ function putTableData(result) {
     let row;
     $("#detail_search_res").html("");
     $.each(result, function(a, b) {
-        row = `<li class="border-bottom mb-2"><a class='text-light' href="/detail/${b.id}"><strong>${b.id}</strong> ${b.name}</a></li>`
+        row = `<li class="border-bottom mb-2"><a class='text-light' href="/detail/${b.id}"><h6>${b.sap}</h6><p>${b.name}</p></a></li>`
         $("#detail_search_res").append(row);
     });
   }

@@ -6,34 +6,59 @@ from rest_framework.generics import (ListAPIView,
                                     CreateAPIView, 
                                     RetrieveUpdateAPIView
                                     )
+from rest_framework.viewsets import ModelViewSet
+
 from myDB.models import (Storage,
                         StorageCat, 
                         StorageResp, 
                         StorageState, 
-                        StorageSubcat
+                        StorageSubcat,
+                        Users
                         )
-from .serializers import (StorageSerializer, 
-                          StorageDetailSerializer,
-                          StateListSerializer,
-                          RespListSerializer,
-                          SubCatListSerializer,
-                          CatListSerializer
+from .serializers import (
+                          AllStorageSerializer,
+                          AllCategorySerializer,
+                          AllSubCategorySerializer,
+                          AllRespSerializer,
+                          AllStateSerializer,
+                          AllUserSerializer
                           )
 # Create your views here.
+class StorageViewSet(ModelViewSet):
+  queryset = Storage.objects.all()
+  serializer_class = AllStorageSerializer
 
-class RespListAPI(ListAPIView):
-  serializer_class = RespListSerializer
-  queryset = StorageResp.objects.all()
+  def get_queryset(self):
+    query = Storage.objects.all()
+    search = self.request.query_params.get('search', None)
+    if search: 
+      query = query.filter(sap__contains=search)
+    return query
+
+  def update(self, request, pk):
+    storage = self.get_object()
+    d = dict(request.data)
+    res = {
+      'name':storage.name,
+      d['type'][0]: d['value'][0]
+    }
+    print(res)
+    serializer = AllStorageSerializer(storage, data=res)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    print(serializer.errors)
+
+    return Response(serializer.errors)
+
+class CategoryViewSet(ModelViewSet):
+  queryset = StorageCat.objects.all()
+  serializer_class = AllCategorySerializer
 
 
-class StateListAPI(ListAPIView):
-  serializer_class = StateListSerializer
-  queryset = StorageState.objects.all()
-
-
-
-class SubCatListAPI(ListAPIView):
-  serializer_class = SubCatListSerializer
+class SubCategoryViewSet(ModelViewSet):
+  queryset = StorageSubcat.objects.all()
+  serializer_class = AllSubCategorySerializer
 
   def get_queryset(self):
     qs = StorageSubcat.objects.all()
@@ -45,39 +70,14 @@ class SubCatListAPI(ListAPIView):
 
     return qs
 
+class StateViewSet(ModelViewSet):
+  queryset = StorageState.objects.all()
+  serializer_class = AllStateSerializer
 
+class RespViewSet(ModelViewSet):
+  queryset = StorageResp.objects.all()
+  serializer_class = AllRespSerializer
 
-class CatListAPI(ListAPIView):
-  serializer_class = CatListSerializer
-  queryset = StorageCat.objects.all()
-
-
-
-class StorageList(ListAPIView):
-  serializer_class = StorageSerializer
-
-  def get_queryset(self):
-    query = Storage.objects.all()
-    search = self.request.query_params.get('search', None)
-    if search: 
-      query = query.filter(id__contains=search)
-    return query
-    
-class StorageDetailAPI(RetrieveUpdateAPIView):
-  serializer_class = StorageDetailSerializer
-  queryset = Storage.objects.all()
-  def put(self, request, pk):
-    storage = self.get_object()
-    d = dict(request.data)
-    res = {
-      'name':storage.name,
-      d['type'][0]: d['value'][0]
-    }
-    print(res)
-    serializer = StorageDetailSerializer(storage, data=res)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    print(serializer.errors)
-
-    return Response(serializer.errors)
+class UserViewSet(ModelViewSet):
+  queryset = Users.objects.all()
+  serializer_class = AllUserSerializer

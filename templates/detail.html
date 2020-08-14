@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Detail{% endblock %}
 {% block scripts %}
-<script src="{% static 'detail.js' %}"></script>
+<script src="{% static 'storageDetails.js' %}"></script>
 
 {% endblock %}
 
@@ -25,11 +25,8 @@
 {% block content %}
 
 <div class="container bg-dark1 rounded">
-  <table id="table" class="table text-light" url="{% url 'api:storage-detail' pk=pk %}" url_list="{% url 'api:storage_list' %}">
-    <tr>
-      <th><span>№</span></th>
-      <td><input id="id" type="text" readonly class="text form-control-plaintext text-light"  value="{{obj.id}}"></td>
-    </tr>
+  <table id="table" class="table text-light" url="/api/storages/{{obj.pk}}/" url_list="/api/storages/">
+    {% csrf_token %}
     <tr>
       <th><span>Наименование</span></th>
       <td>
@@ -48,19 +45,11 @@
         </form>
       </td>
     </tr>
-    <tr>
-      <th><span>Старый сап</span></th>
-      <td>
-        <form class='input'>
-          <input id="sap_old" name='Старый сап' type="text" class="text form-control-plaintext text-light"  value="{{obj.sap_old}}">
-          <input type="submit" hidden>
-        </form>
-      </td>
-    </tr>
+
     <tr>
       <th><span>Категория</span></th>
       <td>
-        <select id="cat_id" name='Категория' class="select form-control-plaintext text-light" aria-label="Default select example" name='cat_id' url='{% url "api:cat-list" %}' value='{{ obj.cat_id }}'>
+        <select id="cat_id" name='Категория' class="select form-control-plaintext text-light" aria-label="Default select example" name='cat_id' url='/api/categories/' value='{{ obj.cat_id }}'>
           {% if not obj.cat_id %}
             <option selected class="bg-dark1" value=0>Select....</option>
           {% else %}
@@ -79,7 +68,7 @@
     <tr>
       <th><span>Субкатегория</span></th>
       <td>
-        <select id="subcat_id" name='Субкатегория' class="select form-control-plaintext text-light" aria-label="Default select example" name='subcat_id' url='{% url "api:subcat-list" %}' value='{{ obj.subcat_id }}'>
+        <select id="subcat_id" name='Субкатегория' class="select form-control-plaintext text-light" aria-label="Default select example" name='subcat_id' url='/api/subcategories/' value='{{ obj.subcat_id }}'>
           {% if not obj.subcat_id %}
             <option selected class="bg-dark1" value=0>Select....</option>
           {% else %}
@@ -98,7 +87,7 @@
     <tr>
       <th><span>Состояние</span></th>
       <td>
-        <select id="state_id" name='Состояние' class="select form-control-plaintext text-light" aria-label="Default select example" name='state_id' url='{% url "api:state-list" %}'>
+        <select id="state_id" name='Состояние' class="select form-control-plaintext text-light" aria-label="Default select example" name='state_id' url='/api/states/'>
           {% if not obj.state_id %}
             <option selected class="bg-dark1" value=0>Select....</option>
           {% else %}
@@ -115,27 +104,31 @@
       </td>
     </tr>
     <tr>
-      <th><span>Владелец</span></th>
-      <td>
-        <form class='input'>
-          <input id="owner_id" name='Владелец' type="text" class="text form-control-plaintext text-light"  value="{{obj.owner_id}}">
-          <input type="submit" hidden>
-        </form>
-      </td>
-    </tr>
-    <tr>
       <th><span>Имя владельца</span></th>
       <td>
-        <form class='input'>
-          <input id="owner_name" name='Имя владельца' type="text" class="text form-control-plaintext text-light"  value="{{obj.owner_name}}">
-          <input type="submit" hidden>
-        </form>
+        <select id="owner_id" name='Ответственный' value={{obj.owner_id}} class="select form-control-plaintext text-light" aria-label="Default select example" name='owner_id' url='/api/users/' >
+          {% if not obj.owner_id and not obj.owner_name %}
+            <option selected class="bg-dark1" value=0>Select....</option>
+          {% elif not obj.owner_id and obj.owner_name %}
+            <option  class="bg-dark1" value=0>Select....</option>
+            <option selected class="bg-dark1" value=0>{{obj.owner_name}}</option>
+          {% else %}
+            <option  class="bg-dark1" value=0>Select....</option>
+          {% endif %}
+          {% for el in users %}
+            {% if el.id == obj.owner_id %}
+              <option selected class="bg-dark1" value={{el.id}}>{{el.secondname}} {{el.firstname}}</option>
+            {% else %}
+              <option class="bg-dark1" value={{el.id}}>{{el.secondname}} {{el.firstname}} </option>
+            {% endif %}
+          {% endfor %}
+        </select>
       </td>
     </tr>
     <tr>
       <th><span>Ответственный</span></th>
       <td>
-        <select id="resp_id" name='Ответственный' class="select form-control-plaintext text-light" aria-label="Default select example" name='resp_id' url='{% url "api:resp-list" %}'>
+        <select id="resp_id" name='Ответственный' class="select form-control-plaintext text-light" aria-label="Default select example" name='resp_id' url='/api/resps/'>
           {% if not obj.resp_id %}
             <option selected class="bg-dark1" value=0>Select....</option>
           {% else %}
@@ -143,9 +136,9 @@
           {% endif %}
           {% for el in resps %}
             {% if el.id == obj.resp_id %}
-              <option selected class="bg-dark1" value="{{el.id}}">{{el.firstname}} {{el.secondname}}</option>
+              <option selected class="bg-dark1" value="{{el.id}}">{{el.secondname}} {{el.firstname}} </option>
             {% else %}
-              <option class="bg-dark1" value="{{el.id}}">{{el.firstname}} {{el.secondname}}</option>
+              <option class="bg-dark1" value="{{el.id}}">{{el.secondname}} {{el.firstname}} </option>
             {% endif %}
           {% endfor %}
         </select>
@@ -187,10 +180,6 @@
       </td>
     </tr>
     <tr>
-      <th><span>Дата изменения</span></th>
-      <td><input id="modified_date" type="text" readonly class="form-control-plaintext text-light" name="modified_date" value="{{obj.modified_date}}" ></td>
-    </tr>
-    <tr>
       <th><span>Адрес</span></th>
       <td>
         <form class='input'>
@@ -204,6 +193,15 @@
       <td>
         <form class='input'>
           <input id="floor" name='Этаж' type="text" class="text form-control-plaintext text-light"  value="{{obj.floor}}">
+          <input type="submit" hidden>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <th><span>Кабинет</span></th>
+      <td>
+        <form class='input'>
+          <input id="cabinet" name='Кабинет' type="text" class="text form-control-plaintext text-light"  value="{{obj.cabinet}}">
           <input type="submit" hidden>
         </form>
       </td>

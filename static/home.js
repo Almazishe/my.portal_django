@@ -34,7 +34,7 @@ function putTableData(result) {
   $("#table").show();
   $("#result").html("");
   $.each(result, function(a, b) {
-      row = `<tr> <th scope='row'>${b.id}</th>"
+      row = `<tr> <th scope='row'>${b.sap}</th>"
         <td> ${b.name} </td>
         <td><a href='detail/${b.id}'><button class='btn btn-sm btn-outline-light'>Detail</button></a></td></tr>`
       $("#result").append(row);

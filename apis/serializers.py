@@ -3,36 +3,46 @@ from myDB.models import (Storage,
                         StorageCat, 
                         StorageResp,
                         StorageState,
-                        StorageSubcat
+                        StorageSubcat,
+                        Users
                         )
 
-class StorageSerializer(serializers.ModelSerializer):
+class AllStorageSerializer(serializers.ModelSerializer):
 	class Meta:
 	    model = Storage
-	    fields = ('id', 'name')
-
-class StorageDetailSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Storage
-    fields = "__all__"
-class CatListSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = StorageCat
-    fields = "__all__"
-class SubCatListSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = StorageSubcat
-    fields = "__all__"
-
-class RespListSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = StorageResp
-    fields = "__all__"
-
-class StateListSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = StorageState
-    fields = "__all__"
+	    fields = '__all__'
 
 
+class AllCategorySerializer(serializers.ModelSerializer):
+	class Meta:
+	    model = StorageCat
+	    fields = '__all__'
+
+
+class AllSubCategorySerializer(serializers.ModelSerializer):
+	class Meta:
+	    model = StorageSubcat
+	    fields = '__all__'
+
+class AllRespSerializer(serializers.ModelSerializer):
+	class Meta:
+	    model = StorageResp
+	    fields = '__all__'
+
+class AllStateSerializer(serializers.ModelSerializer):
+	class Meta:
+	    model = StorageState
+	    fields = '__all__'
+
+
+class AllUserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Users
+    fields = "__all__"#('id', 'firstname', 'secondname',)
+
+
+class id_name_UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Users
+    fields = ('id', 'name',)
 

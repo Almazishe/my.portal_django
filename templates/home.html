@@ -3,18 +3,29 @@
 {% block title %}Item list{% endblock %}
 
 {% block scripts %}
-<script src="{% static 'main.js' %}"></script>
+<script src="{% static 'home.js' %}"></script>
 {% endblock %}
+
+
+
+{% block styles %}
+<style>
+	
+</style>
+{% endblock %}
+
+
+
 
 {% block content %}
 
 
 <div class="table-responsive">
-	<table id="table" url='{% url "api:storage_list" %}' class="table  bg-dark1 text-light table-sm">
+	<table id="table" url='/api/storages/' class="table  bg-dark1 text-light table-sm">
 		<thead>
 			<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Name</th>
+			<th scope="col">SAP</th>
+			<th scope="col">Наименование</th>
 			<th scope="col"></th>
 			</tr>
 		</thead>
