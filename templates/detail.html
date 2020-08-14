@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Detail{% endblock %}
 {% block scripts %}
-<script src="{% static 'storageDetails.js' %}"></script>
+<script src="{% static 'storageDetail.js' %}"></script>
 
 {% endblock %}
 
@@ -28,19 +28,19 @@
   <table id="table" class="table text-light" url="/api/storages/{{obj.pk}}/" url_list="/api/storages/">
     {% csrf_token %}
     <tr>
-      <th><span>Наименование</span></th>
+      <th><span>SAP</span></th>
       <td>
         <form class='input'>
-          <input id="name" name='Наименование' type="text" class="text form-control-plaintext text-light"  value="{{obj.name}}">
+          <input id="sap" name='Сап' type="text" class="text form-control-plaintext text-light"  value="{{obj.sap}}">
           <input type="submit" hidden>
         </form>
       </td>
     </tr>
     <tr>
-      <th><span>Сап</span></th>
+      <th><span>Наименование</span></th>
       <td>
         <form class='input'>
-          <input id="sap" name='Сап' type="text" class="text form-control-plaintext text-light"  value="{{obj.sap}}">
+          <input id="name" name='Наименование' type="text" class="text form-control-plaintext text-light"  value="{{obj.name}}">
           <input type="submit" hidden>
         </form>
       </td>
@@ -221,6 +221,6 @@
 
 
 
-
+ 
 {% endblock %}
 

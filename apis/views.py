@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import Q
 from django.shortcuts import render, get_list_or_404
 from rest_framework.response import Response
 from rest_framework.generics import (ListAPIView, 
@@ -32,7 +33,7 @@ class StorageViewSet(ModelViewSet):
     query = Storage.objects.all()
     search = self.request.query_params.get('search', None)
     if search: 
-      query = query.filter(sap__contains=search)
+      query = query.filter(Q(sap__contains=search) | Q(name__contains=search))
     return query
 
   def update(self, request, pk):

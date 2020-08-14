@@ -6,13 +6,13 @@ var $input = $('#input');
 var popup_time = 2000;
 
 
+
 $(document).on("submit",".input", e => {
   e.preventDefault()
   var x = e.currentTarget, value = x.querySelector('.text').value, type = x.querySelector('.text').getAttribute('id')
   var url = $("#table").attr('url')
   putRequest(url, type, value)  
 
-  console.log(url)
 
   show_popup()
   popup = document.getElementById("popup")
@@ -123,4 +123,20 @@ function putTableData(result) {
         $("#detail_search_res").append(row);
     });
   }
-}
+};
+
+
+$('#description').keydown(function(e) {
+  if (e.which == 13) {
+    e.preventDefault()
+    var x = e.currentTarget, value = x.value, type = x.getAttribute('id')
+    var url = $("#table").attr('url')
+    putRequest(url, type, value)  
+  
+   
+    show_popup()
+    popup = document.getElementById("popup")
+    popup.querySelector('.p').innerHTML = x.querySelector('.text').getAttribute('name') + " изменен удачно!"
+    typingTimer = setTimeout(hide_popup, popup_time)
+   } 
+});
