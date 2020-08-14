@@ -4,6 +4,7 @@ var typingTimer;                //timer identifier
 var doneTypingInterval = 500;  //time in ms, 5 second for example
 var $input = $('#input');
 
+ 
 $input.on('keyup', function () {
   clearTimeout(typingTimer);
   send_data['search'] = this.value
@@ -22,9 +23,6 @@ function doneTyping() {
       method: "GET",
       url: url,
       data: send_data,
-      beforeSend: function() {
-          $("#result").append("<tr><td><h1>Loading data...</h1></td><td></td></tr>");
-      },
       success: function(result) {
           putTableData(result);
       },

@@ -20,6 +20,7 @@ def storage_view(request, pk=None):
   
 
   context = {
+    'pk': pk,
     'obj': obj,
     'cats': cats,
     'states': states,

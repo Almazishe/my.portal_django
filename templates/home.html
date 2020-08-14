@@ -4,15 +4,13 @@
 
 {% block scripts %}
 <script src="{% static 'main.js' %}"></script>
-  
 {% endblock %}
 
 {% block content %}
 
 
 <div class="table-responsive">
-  <input type="text" id="input" placeholder="Type..." value="">
-	<table id="table" url='{% url "api:storage_list" %}' class="table table-striped table-dark table-sm">
+	<table id="table" url='{% url "api:storage_list" %}' class="table  bg-dark1 text-light table-sm">
 		<thead>
 			<tr>
 			<th scope="col">ID</th>

@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, get_list_or_404
 from rest_framework.response import Response
 from rest_framework.generics import (ListAPIView, 
@@ -64,11 +66,18 @@ class StorageList(ListAPIView):
 class StorageDetailAPI(RetrieveUpdateAPIView):
   serializer_class = StorageDetailSerializer
   queryset = Storage.objects.all()
-
   def put(self, request, pk):
     storage = self.get_object()
-    serializer = StorageDetailSerializer(storage, data=request.data)
+    d = dict(request.data)
+    res = {
+      'name':storage.name,
+      d['type'][0]: d['value'][0]
+    }
+    print(res)
+    serializer = StorageDetailSerializer(storage, data=res)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
+    print(serializer.errors)
+
     return Response(serializer.errors)
