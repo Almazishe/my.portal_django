@@ -38,7 +38,7 @@ class AllStateSerializer(serializers.ModelSerializer):
 class AllUserSerializer(serializers.ModelSerializer):
   class Meta:
     model = Users
-    fields = "__all__"#('id', 'firstname', 'secondname',)
+    fields = ('id', 'firstname', 'secondname',)
 
 
 class id_name_UserSerializer(serializers.ModelSerializer):

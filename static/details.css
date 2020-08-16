@@ -1,0 +1,16 @@
+#owner_names {
+  overflow: auto;
+  list-style-type: none;
+  padding: 1.2em;
+  display: none;
+  max-height: 50vh;
+  max-width: max-content;
+}
+
+#owner_id:focus + #owner_names, #owner_names:hover{
+  display: block;
+}
+
+.owner {
+  cursor: pointer;
+}

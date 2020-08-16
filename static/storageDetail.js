@@ -1,5 +1,6 @@
 doneTyping();
 var send_data = {}
+var owner_data = {}
 var typingTimer; 
 var doneTypingInterval = 500;
 var $input = $('#input');
@@ -136,7 +137,66 @@ $('#description').keydown(function(e) {
    
     show_popup()
     popup = document.getElementById("popup")
-    popup.querySelector('.p').innerHTML = x.querySelector('.text').getAttribute('name') + " изменен удачно!"
+    popup.querySelector('.p').innerHTML = "Описание изменен удачно!"
     typingTimer = setTimeout(hide_popup, popup_time)
    } 
+});
+
+
+$('#owner_id').on('keyup', function () {
+  clearTimeout(typingTimer);
+  owner_data['search'] = this.value
+  typingTimer = setTimeout(getUsers(), doneTypingInterval);
+});
+
+$('#owner_id').on('keydown', function () {
+  clearTimeout(typingTimer);
+});
+
+
+
+function getUsers() {
+  var url = $('#owner_id').attr('url')
+  $.ajax({
+      method: "GET",
+      url: url,
+      data: owner_data,
+      success: function(result) {
+          putUsers(result);
+      },
+  });
+}
+
+function putUsers(data){
+  if (data.length === 0){
+    $("#owner_names").html("");
+    $("#owner_names").append(`<li class="border-bottom text-light">Нет владельца с таким именем или фамилией!</li>`);
+  } else {
+    let row;
+    $("#owner_names").html("");
+    console.log(data)
+    data.map( (b) => {
+        row = `<li  owner_id=${b.id} class="owner border-bottom mb-2">${b.firstname} ${b.secondname}</li>`
+        $("#owner_names").append(row);
+    });
+  }
+}
+
+
+$(document).on('click', '.owner', (e) => {
+  var owner = e.currentTarget
+  var id = owner.getAttribute('owner_id')
+  var val = owner.innerHTML
+  var url = $('#table').attr('url')
+
+
+  putRequest(url, 'owner_id', id)
+  putRequest(url, 'owner_name', val)
+
+  $('#owner_id').val(val)
+
+  show_popup()
+  popup = document.getElementById("popup")
+  popup.querySelector('.p').innerHTML = "Владелец изменен удачно!"
+  typingTimer = setTimeout(hide_popup, popup_time)
 });

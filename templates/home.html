@@ -9,9 +9,7 @@
 
 
 {% block styles %}
-<style>
-	
-</style>
+<link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
 
 
@@ -24,8 +22,10 @@
 	<table id="table" url='/api/storages/' class="table  bg-dark1 text-light table-sm">
 		<thead>
 			<tr>
-			<th scope="col">SAP</th>
-			<th scope="col">Наименование</th>
+			<th scope="col" name='sap' class="sort">SAP<i class="fa fa-chevron-up ml-2"></i></th>
+			<th scope="col" name='name' class="sort">Наименование<i class="fa fa-chevron-up ml-2"></i></th>
+			<th scope="col" name='cat_id' class="sort">Категория<i class="fa fa-chevron-up ml-2"></i></th>
+			<th scope="col" name="subcat_id" class="sort">Субкатегория<i class="fa fa-chevron-up ml-2"></i></th>
 			<th scope="col"></th>
 			</tr>
 		</thead>

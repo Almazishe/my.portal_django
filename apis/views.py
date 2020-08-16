@@ -31,9 +31,24 @@ class StorageViewSet(ModelViewSet):
 
   def get_queryset(self):
     query = Storage.objects.all()
+    query = query.order_by('sap')
+
     search = self.request.query_params.get('search', None)
-    if search: 
+    order = self.request.query_params.get('order', None)
+    sign = self.request.query_params.get('sign', None)
+
+    if order:
+      query = query.order_by(sign + order)
+
+    if search:
+      try:
+        int(search)
+        query = query.filter(Q(sap__contains=search) | Q(name__contains=search))
+      except Exception:
+        query = query.filter(name__contains=search)
+
       query = query.filter(Q(sap__contains=search) | Q(name__contains=search))
+    
     return query
 
   def update(self, request, pk):
@@ -82,3 +97,13 @@ class RespViewSet(ModelViewSet):
 class UserViewSet(ModelViewSet):
   queryset = Users.objects.all()
   serializer_class = AllUserSerializer
+
+
+  def get_queryset(self):
+      qs = Users.objects.filter(id=-1)
+      search = self.request.query_params.get('search', None)
+
+      if search:
+        qs = Users.objects.filter(Q(firstname__contains=search) | Q(secondname__contains=search))
+      return qs
+  

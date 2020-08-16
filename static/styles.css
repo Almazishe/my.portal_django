@@ -5,6 +5,7 @@
 
 
 body {
+  overflow-x: hidden;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -57,7 +58,7 @@ a {
   padding: 2em;
 }
 
-#table1 {
+#table1: {
   position: absolute;
 }
 

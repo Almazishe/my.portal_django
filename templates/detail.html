@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block styles %}
+<link rel="stylesheet" href="{% static 'details.css' %}">
 <style>
   #input:focus + #detail_search_res, #detail_search_res:hover{
     display: block;
@@ -106,26 +107,12 @@
     <tr>
       <th><span>Имя владельца</span></th>
       <td>
-        <select id="owner_id" name='Ответственный' value={{obj.owner_id}} class="select form-control-plaintext text-light" aria-label="Default select example" name='owner_id' url='/api/users/' >
-          {% if not obj.owner_id and not obj.owner_name %}
-            <option selected class="bg-dark1" value=0>Select....</option>
-          {% elif not obj.owner_id and obj.owner_name %}
-            <option  class="bg-dark1" value=0>Select....</option>
-            <option selected class="bg-dark1" value=0>{{obj.owner_name}}</option>
-          {% else %}
-            <option  class="bg-dark1" value=0>Select....</option>
-          {% endif %}
-          {% for el in users %}
-            {% if el.id == obj.owner_id %}
-              <option selected class="bg-dark1" value={{el.id}}>{{el.secondname}} {{el.firstname}}</option>
-            {% else %}
-              <option class="bg-dark1" value={{el.id}}>{{el.secondname}} {{el.firstname}} </option>
-            {% endif %}
-          {% endfor %}
-        </select>
+        <input id="owner_id" type="text" class="text form-control-plaintext text-light"  value="{{obj.owner_name}}" url='/api/users/'>
+        <ul id="owner_names" class="position-absolute bg-dark1 shadow">
+        </ul>
       </td>
     </tr>
-    <tr>
+    <tr> 
       <th><span>Ответственный</span></th>
       <td>
         <select id="resp_id" name='Ответственный' class="select form-control-plaintext text-light" aria-label="Default select example" name='resp_id' url='/api/resps/'>
