@@ -19,6 +19,13 @@
 
 
 <div class="table-responsive">
+	<div class="container">	
+		<select id="page_count" class="select bg-dark text-light">
+			<option value=20>20</option>
+			<option value=50>50</option>
+			<option value=100>100</option>
+		</select>
+	</div>>
 	<table id="table" url='/api/storages/' class="table  bg-dark1 text-light table-sm">
 		<thead>
 			<tr>
@@ -32,6 +39,10 @@
 		<tbody id="result">
 		</tbody>
 	</table>
+	<nav>
+		<ul class="pagination justify-content-center pagination-sm">
+		</ul>
+	</nav>
 </div>
 
 {% endblock %}

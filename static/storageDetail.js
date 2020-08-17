@@ -112,6 +112,7 @@ function doneTyping() {
 }
  
 function putTableData(result) {
+  result = result.results
 
   if (result.length === 0){
     $("#detail_search_res").html("");
@@ -146,7 +147,7 @@ $('#description').keydown(function(e) {
 $('#owner_id').on('keyup', function () {
   clearTimeout(typingTimer);
   owner_data['search'] = this.value
-  typingTimer = setTimeout(getUsers(), doneTypingInterval);
+  typingTimer = setTimeout(getUsers, doneTypingInterval);
 });
 
 $('#owner_id').on('keydown', function () {
@@ -168,13 +169,13 @@ function getUsers() {
 }
 
 function putUsers(data){
+  data = data.results
   if (data.length === 0){
     $("#owner_names").html("");
     $("#owner_names").append(`<li class="border-bottom text-light">Нет владельца с таким именем или фамилией!</li>`);
   } else {
     let row;
     $("#owner_names").html("");
-    console.log(data)
     data.map( (b) => {
         row = `<li  owner_id=${b.id} class="owner border-bottom mb-2">${b.firstname} ${b.secondname}</li>`
         $("#owner_names").append(row);

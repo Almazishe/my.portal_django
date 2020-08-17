@@ -8,6 +8,7 @@ from rest_framework.generics import (ListAPIView,
                                     RetrieveUpdateAPIView
                                     )
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.pagination import PageNumberPagination
 
 from myDB.models import (Storage,
                         StorageCat, 
@@ -25,9 +26,15 @@ from .serializers import (
                           AllUserSerializer
                           )
 # Create your views here.
+class StoragePagination(PageNumberPagination):
+  page_size = 20
+  page_size_query_param = 'page_size'
+  max_page_size = 100
+
 class StorageViewSet(ModelViewSet):
   queryset = Storage.objects.all()
   serializer_class = AllStorageSerializer
+  pagination_class = StoragePagination
 
   def get_queryset(self):
     query = Storage.objects.all()

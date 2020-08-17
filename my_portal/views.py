@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic.edit import UpdateView
 
-
 from myDB.models import Storage, StorageCat, StorageResp, StorageState, StorageSubcat, Users
 
 
@@ -13,6 +12,7 @@ def home(request):
 
 def storage_view(request, pk=None):
   obj = Storage.objects.get(pk=pk)
+  storages = Storage.objects.all()
   cats = StorageCat.objects.all().order_by('name')
   states = StorageState.objects.all().order_by('name')
   resps = StorageResp.objects.all().order_by('secondname')
@@ -22,6 +22,7 @@ def storage_view(request, pk=None):
 
   context = {
     'obj': obj,
+    'storages': storages,
     'cats': cats,
     'states': states,
     'resps': resps,

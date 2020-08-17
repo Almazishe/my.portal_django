@@ -8,6 +8,8 @@ var $input = $('#input');
 var categories = {}
 var subcategories = {}
 
+var temp_page = 1;
+var totalPages = 0;
 
 
 $('.sort').on('click', (e) => {
@@ -35,6 +37,12 @@ $input.on('keydown', function () {
 });
 
 
+$('.pag').on('click', (e) => {
+  var target = e.currentTarget
+  send_data['page'] = target.getAttribute('page')
+  doneTyping()
+});
+
 
 function doneTyping() {
   var url = $('#table').attr('url')
@@ -43,9 +51,47 @@ function doneTyping() {
       url: url,
       data: send_data,
       success: function(result) {
-          putTableData(result);
+          putPagination(result.count)
+          putTableData(result.results);
       },
   });
+}
+
+$('#page_count').on('change', (e) => {
+  var x = e.currentTarget
+  send_data['page_size'] = x.value
+  doneTyping();
+});
+
+function putPagination(count){
+  var x = document.getElementById('page_count')
+  var page_count = count % x.value == 0 ? parseInt(count / x.value) : parseInt((count / x.value) + 1)
+  totalPages = page_count
+  $('.pagination').html("")
+  $('.pagination').append('<li id="prev" class="page-item"><a class="page-link" href="javascript:void(0)">Prev</a>')
+  
+  for (var i = 1; i <= totalPages; i++) {
+    if (temp_page == i){
+      $(".pagination").append(
+        "<li page=" + i +  " class='page-item current-page active'><a class='page-link'  href='javascript:void(0)'>" +
+        i +
+        "</a></li>"
+        );
+    } else {
+      $(".pagination").append(
+        "<li page=" + i +  " style='cursor:pointer;' class='page-item current-page'><a class='page-link'>" +
+        i +
+        "</a></li>"
+      );
+    }    
+  }
+  
+  //appends the next button link as the final child element in the pagination
+  
+  $(".pagination").append(
+    "<li class='page-item' id='next'><a class='page-link' href='javascript:void(0)'>Next</a></li>"
+    );
+  
 }
  
 function putTableData(result) {
@@ -86,7 +132,7 @@ function getCategories(){
     method: "GET",
     url: '/api/categories/',
     success: function(result) {
-      categories = result
+      categories = result.results
     },
   });
 }
@@ -96,8 +142,25 @@ function getSubcategories(){
     method: "GET",
     url: '/api/subcategories/',
     success: (result) => {
-      subcategories = result
+      subcategories = result.results
     },
   });
 }
 
+$(document).on("click",".pagination li", function () {
+  if ($(this).attr('id') === 'next'){
+    if (temp_page < totalPages) {
+      temp_page += 1
+    }
+    send_data['page'] = temp_page
+  } else if ($(this).attr('id') === 'prev'){
+    if (temp_page > 1) {
+      temp_page -= 1
+    } 
+    send_data['page'] = temp_page
+  } else {
+    send_data['page'] = $(this).attr('page')
+    temp_page = $(this).attr('page')
+  }
+  doneTyping()
+});
